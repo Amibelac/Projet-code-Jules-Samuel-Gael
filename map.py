@@ -23,20 +23,23 @@ class Map:
     def update(self):
         self.group.draw(self.screen.get_display())
         """
-
 import pygame
 import pytmx
 from pytmx.util_pygame import load_pygame
 
 pygame.init()
 
-tmx_data = load_pygame("/Users/gml/Desktop/Projet code jeu python/images/Map/assets/map_projet.tmx")
+surfaceL = 2000
+surfaceH = 1920
+"""
+tailleEcran=(1080, 720)
+"""
+speed = 2.5
 
-surfaceW = 800
-surfaceH = 500
-speed = 2
 
-surface = pygame.display.set_mode((surfaceW, surfaceH))
+surface = pygame.display.set_mode((surfaceL, surfaceH))
+
+tmx_data = load_pygame("/Users/gml/Desktop/Projet Trophé NSI#2/Images/Map/map_projet_python.tmx")
 
 blue = (113, 177, 227)
 white = (255, 255, 255)
@@ -44,9 +47,11 @@ PersoW = 50
 PersoH = 66
 
 img = pygame.image.load("Personnage-vendeur.png")
+img_rect = img.get_rect()
 
-def dessiner_map(surface, tmx_data):
-    # Dessine toutes les couches de tuiles visibles
+
+#Chatgpt ou vidéo jsplus
+def Map(surface, tmx_data):
     for layer in tmx_data.visible_layers:
         if isinstance(layer, pytmx.TiledTileLayer):
             for x, y, gid in layer:
@@ -57,24 +62,25 @@ def dessiner_map(surface, tmx_data):
                         (x * tmx_data.tilewidth, y * tmx_data.tileheight)
                     )
 
+
 def perso(x, y, image):
     surface.blit(image, (x, y))
 
 def principale():
-    x = 150
-    y = 200
+
+    x = (surfaceL - img_rect.width) // 2
+    y = (surfaceH - img_rect.height) // 2
 
     game_over = False
     clock = pygame.time.Clock()
     speed = 2
-
-    while not game_over:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
+#Pour quitter le jeu #1
+    while not game_over:#1
+        for event in pygame.event.get():#1
+            if event.type == pygame.QUIT:#1
+                game_over = True#1
 
         keys = pygame.key.get_pressed()
-
 
         if keys[pygame.K_a]:
             x -= speed
@@ -86,15 +92,12 @@ def principale():
             y += speed
 
 
-        dessiner_map(surface, tmx_data)
-
-
+        Map(surface, tmx_data)
         perso(x, y, img)
 
         pygame.display.update()
         clock.tick(60)
 
 principale()
-
 pygame.quit()
 quit()
